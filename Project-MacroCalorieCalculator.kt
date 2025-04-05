@@ -1,5 +1,7 @@
 package com.example.kotlinders
 
+//My first Kotlin Tryout, I tried myself. It was just a challange, nothing more.
+
 var continueprogram: Boolean = true
 
 var dailyfoodlist: MutableMap<String, Int> = mutableMapOf()
@@ -7,13 +9,12 @@ var dailyfoodlist: MutableMap<String, Int> = mutableMapOf()
 data class foodprofile(val karbfor100: Int, val proteinfor100: Int, val fatfor100: Int)
 
 
-
 val foodDB: MutableMap<String, foodprofile> = mutableMapOf()
 
 
 fun dailyadd() {
     println("What did you eat?")
-    var food = readln().lowercase()
+    var food = readln().lowercase() //This lowercase function blocks the mess with the letters
     println("How much grams of it?")
     var gram = readln().toInt()
     if(dailyfoodlist[food] != null){
@@ -25,7 +26,7 @@ fun dailyadd() {
 
 fun dbadd(){
     println("What is the food's name?")
-    var Name = readln().lowercase()
+    var Name = readln().lowercase() //This lowercase function blocks the mess with the letters
     println("How much karbs for 100 grams?")
     var Karb: Int = readln().toInt()
     println("How much protein for 100 grams?")
