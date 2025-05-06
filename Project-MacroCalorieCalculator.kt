@@ -1,7 +1,4 @@
-package com.example.kotlinders
-
 //My first Kotlin Tryout, I tried myself. It was just a challange, nothing more.
-
 var continueprogram: Boolean = true
 
 var dailyfoodlist: MutableMap<String, Int> = mutableMapOf()
