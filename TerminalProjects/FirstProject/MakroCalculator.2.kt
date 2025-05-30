@@ -23,12 +23,13 @@ var database: MutableList<Food> = mutableListOf()
 
 var databasestrings: MutableSet<String> = database.map { it.name }.toMutableSet() //Declared as set to block mess
 
-val file1 = File("Daily") //   Files
-val file2 = File("Database") 
+val file1 = File("Daily") //   File
+val file2 = File("Database") //    System
 val file3 = File("Lastdate")
 //I prefer moduler archıtecture for much cleaner code.
 fun savedata(){
-    file1.writeText(gson.toJson(dailyfood)) 
+    //I prefer moduler archıtecture for much cleaner code.
+    file1.writeText(gson.toJson(dailyfood))
     file2.writeText(gson.toJson(database))
     file3.writeText(gson.toJson(LocalDate.now().toString()))
     println("Saving to: ${file1.absolutePath}")
@@ -40,7 +41,7 @@ fun loaddata(){
     val databaseToken = object: TypeToken<List<Food>>(){}.type
     val lastdateToken = object : TypeToken<String>() {}.type
 
-    if (file1.exists() && file3.exists()){ //If lastdate is not exists, there is no data in Daily.json
+    if (file1.exists() && file3.exists()){
         if(LocalDate.now().toString() == gson.fromJson(file3.readText(), lastdateToken))
         dailyfood = gson.fromJson(file1.readText(),dailyfoodToken) }
     if(file2.exists()){
@@ -51,8 +52,9 @@ fun databaseadd(){
     var karb = ""
     var fat = ""
     while (name.isEmpty() || !protein.isDigitsOnlyCustom() || !karb.isDigitsOnlyCustom() || !fat.isDigitsOnlyCustom()){ //For null safety
-        println("What is the foods name? ")
+        println("What is the foods name? / Cancel for exit")
         name = readln().lowercase()
+        if (name == "cancel"){return}
         println("How much proteins for 100 grams? ")
         protein = readln()
         println("How much karbs for 100 grams? ")
@@ -66,8 +68,9 @@ fun databaseadd(){
         println("Please enter valid name and only digit text for makros! ") } }
 fun dailyfoodadd(){
     showdatabase()
-    println("Enter name of the food: ")
+    println("Enter name of the food: / Cancel for exit ")
     var foodname = readln().lowercase()
+    if (foodname == "cancel"){return}
     while (!(foodname in databasestrings)) {
         println("Please enter a name that database contains / Read 'Cancel' for cancel ")
         foodname = readln().lowercase()
@@ -107,11 +110,21 @@ fun macroshow(){
         dkarb = dkarb + a.karb*gram/100
         dfat = dfat + a.fat*gram/100
     }
-    var cal = 4*dprotein + 4*dkarb + 9*dfat
+
     println(dprotein.toString() +" of protein")
     println(dkarb.toString()+ " of karb")
     println(dfat.toString()+ " of fat")
-    println(cal.toString() + " calories ")
+    println((4*dprotein + 4*dkarb + 9*dfat).toString() + " calories ")
+
+}
+fun dailyclear(){
+    dailyfood.clear()
+}
+fun databaseclear(){
+    println("Are you sure want to clear the database? Y/N" )
+    var answer = readln().lowercase()
+    if (answer == "y"){
+    database.clear()}
 }
 var cont = true
 fun main(){
@@ -121,11 +134,13 @@ fun main(){
         macroshow()
         println("1 - Add to daily food list")
         println("2 - Add to food database")
-        println("3-  Save and exit")
+        println("3 - To clear daily foods")
+        println("4 - Save and exit")
+        println("99 - To clear database")
         println("Enter the number: ")
         var order: String = readln()
-        while (order != "1" && order != "2" && order != "3"){
-            println("Please enter only (1,2,3)")
+        while (order != "1" && order != "2" && order != "3" && order != "4" && order != "99"){
+            println("Please enter only (1,2,3,4)")
             order = readln()
         }
         if (order == "1"){
@@ -136,10 +151,17 @@ fun main(){
             databaseadd()
         }
         if (order == "3"){
+            dailyclear()
+        }
+        if(order == "4"){
             saveandexit()
+        }
+        if(order == "99"){
+            databaseclear()
         }
     }
 }
+
 
 
 
